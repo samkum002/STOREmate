@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StoreMate Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff7a00, #ffcc00);
+      color: #fff;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    h1 {
+      font-size: 40px;
+      background: linear-gradient(to right, #ffffff, #e0e0e0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      width: 400px;
+      margin: auto;
+      background: rgba(255, 165, 0, 0.7);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      border: 2px solid #ff9e00;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0 2px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .error {
+      color: #ff6b6b;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    button {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      background-color: #f1c40f;
+      color: white;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    #registerForm {
+      display: none;
+    }
+
+    .link {
+      color: #ddd;
+      cursor: pointer;
+      display: block;
+      margin-top: 15px;
+    }
+
+    #flashMessage {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #f1c40f;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 5px;
+      display: none;
+      font-weight: bold;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="flashMessage"></div>
+
+  <h1> Welcome to StoreMate 🛒</h1>
+
+  <div class="container">
+    <!-- Login options -->
+    <div id="loginOptions">
+      <button onclick="showUserLogin()">User Login</button>
+      <button onclick="showAdminLogin()">Admin Login</button>
+      <span class="link" onclick="showRegister()">Don't have an account? Register</span>
+    </div>
+
+    <!-- User login form -->
+    <div id="userLoginForm" style="display:none;">
+      <h2>User Login</h2>
+      <input type="email" id="userEmail" placeholder="Email" required>
+      <div class="error" id="userEmailError"></div>
+
+      <input type="password" id="userPassword" placeholder="Password" required>
+      <div class="error" id="userPasswordError"></div>
+
+      <button onclick="userLogin()">Login</button>
+      <span class="link" onclick="goBack()">Back</span>
+    </div>
+
+    <!-- Admin login form -->
+    <div id="adminLoginForm" style="display:none;">
+      <h2>Admin Login</h2>
+      <input type="email" id="adminEmail" placeholder="Email" required>
+      <div class="error" id="adminEmailError"></div>
+
+      <input type="password" id="adminPassword" placeholder="Password" required>
+      <div class="error" id="adminPasswordError"></div>
+
+      <button onclick="adminLogin()">Login</button>
+      <span class="link" onclick="goBack()">Back</span>
+    </div>
+
+    <!-- Register form -->
+    <div id="registerForm">
+      <h2>Register</h2>
+      <input type="text" id="registerName" placeholder="Name" required>
+      <div class="error" id="nameError"></div>
+
+      <input type="text" id="registerPhone" placeholder="Phone" required>
+      <div class="error" id="phoneError"></div>
+
+      <input type="email" id="registerEmail" placeholder="Email" required>
+      <div class="error" id="emailError"></div>
+
+      <input type="password" id="registerPassword" placeholder="Password" required>
+      <div class="error" id="passwordError"></div>
+
+      <input type="text" id="registerAddress" placeholder="Address" required>
+      <div class="error" id="addressError"></div>
+
+      <button onclick="registerUser()">Register</button>
+      <span class="link" onclick="goBack()">Back</span>
+    </div>
+  </div>
+
+  <script>
+    function clearErrors() {
+      document.querySelectorAll(".error").forEach(el => el.innerText = "");
+    }
+
+    function showUserLogin() {
+      clearErrors();
+      document.getElementById('loginOptions').style.display = 'none';
+      document.getElementById('userLoginForm').style.display = 'block';
+    }
+
+    function showAdminLogin() {
+      clearErrors();
+      document.getElementById('loginOptions').style.display = 'none';
+      document.getElementById('adminLoginForm').style.display = 'block';
+    }
+
+    function showRegister() {
+      clearErrors();
+      document.getElementById('loginOptions').style.display = 'none';
+      document.getElementById('registerForm').style.display = 'block';
+    }
+
+    function goBack() {
+      clearErrors();
+      document.getElementById('loginOptions').style.display = 'block';
+      document.getElementById('userLoginForm').style.display = 'none';
+      document.getElementById('adminLoginForm').style.display = 'none';
+      document.getElementById('registerForm').style.display = 'none';
+    }
+
+    function showFlashMessage(msg) {
+      const flash = document.getElementById("flashMessage");
+      flash.textContent = msg;
+      flash.style.display = "block";
+      setTimeout(() => {
+        flash.style.display = "none";
+      }, 3000);
+    }
+
+    async function userLogin() {
+      clearErrors();
+      const email = document.getElementById("userEmail").value;
+      const password = document.getElementById("userPassword").value;
+
+      const response = await fetch("http://localhost:8080/api/v1/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (data.message === "Logged-in Successfully") {
+        showFlashMessage(data.message);
+        setTimeout(() => {
+          window.location.href = `/category.html?userEmail=${encodeURIComponent(email)}`; // Passing email via URL
+        }, 1000);
+      } else {
+        document.getElementById("userEmailError").innerText = data.message;
+        document.getElementById("userPasswordError").innerText = data.message;
+      }
+    }
+
+    async function adminLogin() {
+      clearErrors();
+      const email = document.getElementById("adminEmail").value;
+      const password = document.getElementById("adminPassword").value;
+
+      const response = await fetch("http://localhost:8080/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (data.message === "Logged-in Successfully") {
+        showFlashMessage(data.message);
+        setTimeout(() => {
+          window.location.href = "/admin-dashboard.html";
+        }, 1000);
+      } else {
+        document.getElementById("adminEmailError").innerText = data.message;
+        document.getElementById("adminPasswordError").innerText = data.message;
+      }
+    }
+
+    async function registerUser() {
+      clearErrors();
+      const name = document.getElementById("registerName").value;
+      const phone = document.getElementById("registerPhone").value;
+      const email = document.getElementById("registerEmail").value;
+      const password = document.getElementById("registerPassword").value;
+      const address = document.getElementById("registerAddress").value;
+
+      const response = await fetch("http://localhost:8080/api/v1/users/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, email, password, address })
+      });
+
+      const message = await response.text();
+
+      if (response.ok && message === "User registered successfully!") {
+        showFlashMessage(message);
+        goBack();
+      } else {
+        if (message.includes("Name")) document.getElementById("nameError").innerText = message;
+        else if (message.includes("Phone")) document.getElementById("phoneError").innerText = message;
+        else if (message.includes("Email")) document.getElementById("emailError").innerText = message;
+        else if (message.includes("Password")) document.getElementById("passwordError").innerText = message;
+        else if (message.includes("Address")) document.getElementById("addressError").innerText = message;
+      }
+    }
+  </script>
+
+</body>
+</html>

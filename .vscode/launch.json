@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "PasswordHashGenerator",
+            "request": "launch",
+            "mainClass": "com.store.mate.STOREmate.PasswordHashGenerator",
+            "projectName": "STOREmate"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-StorEmateApplication<STOREmate>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.store.mate.STOREmate.StorEmateApplication",
+            "projectName": "STOREmate",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

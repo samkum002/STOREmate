@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Browse Categories - StoreMate</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #141E30, #243B55);
+      margin: 0;
+      padding: 40px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    h2 {
+      font-size: 34px;
+      margin-bottom: 40px;
+      color: #ffffff;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .button-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    button {
+      padding: 20px;
+      font-size: 20px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      background-color: #2e8b57;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    button:hover {
+      background-color: #24734c;
+      transform: scale(1.05);
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: red;
+      padding: 10px 14px;
+      font-size: 20px;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.1);
+    }
+  </style>
+
+  <script>
+    // Fetch the userEmail from URL when the page loads
+    const urlParams = new URLSearchParams(window.location.search);
+    const userEmail = urlParams.get('userEmail');
+
+    function goToCategory(url) {
+      window.location.href = `${url}?userEmail=${encodeURIComponent(userEmail)}`;
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Back Button -->
+  <a href="login.html" class="back-btn" title="Go Back">&#8630;</a>
+
+  <h2>Explore Product Categories</h2>
+  <div class="button-container">
+    <button onclick="goToCategory('/frozen.html')">Frozen Foods</button>
+    <button onclick="goToCategory('/personal.html')">Personal Care</button>
+    <button onclick="goToCategory('/fruits.html')">Fruits</button>
+    <button onclick="goToCategory('/vegetables.html')">Vegetables</button>
+    <button onclick="goToCategory('/beverages.html')">Beverages</button>
+    <button onclick="goToCategory('/grains.html')">Grains and Cereals</button>
+    <button onclick="goToCategory('/snacks.html')">Snacks</button>
+    <button onclick="goToCategory('/cart.html')">View 🛒</button>
+  </div>
+</body>
+</html>
