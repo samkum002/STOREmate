@@ -396,13 +396,6 @@ git push origin feature/your-feature
 
 Open a Pull Request.
 
-📄 License
-
-This project is currently intended as an academic/learning project.
-
-If you plan to distribute it publicly, add an appropriate license such
-as MIT License after deciding the licensing terms for the project.
-
 👤 Author
 
 Sameer Kumar
